@@ -1,5 +1,8 @@
 # DoctrineEncryptBundle
 
+> **Warning**
+> This repository is not actively maintained or developed anymore. In our opinion encrypting database information this way is not good practice and mainly gives little extra protection, but at a huge cost of usability and performance. It can only help when the database itself is stolen without keys. We have now phased it out in our own projects.
+
 Bundle allows to create doctrine entities with fields that will be protected with 
 help of some encryption algorithm in database and it will be clearly for developer, because bundle is uses doctrine life cycle events
 
