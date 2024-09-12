@@ -11,7 +11,7 @@
         "ext-openssl": "*"
     },
     "autoload": {
-        "psr-4": { "Ambta\\DoctrineEncryptBundle": "src" }
+        "psr-4": { "Ambta\\DoctrineEncryptBundle\\": "src" }
     },
     "authors": [
         {
