@@ -109,7 +109,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
         $properties    = [];
 
         foreach ($propertyArray as $property) {
-            if ($this->annotationReader->getPropertyAnnotation($property, 'Ambta\DoctrineEncryptBundle\Configuration\Encrypted')) {
+            if ($this->annotationReader->getPropertyAnnotation($property, \Ambta\DoctrineEncryptBundle\Configuration\Encrypted::class)) {
                 $properties[] = $property;
             }
         }

@@ -77,7 +77,7 @@ class DoctrineEncryptExtension extends Extension
      *
      * @return string
      */
-    public function getAlias()
+    public function getAlias(): string
     {
         return 'ambta_doctrine_encrypt';
     }

@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
  */
 class AES256EncryptorTest extends TestCase
 {
-    const SECRET_KEY = '154758dbe24e20067b27fc3cef22dc61';
+    final public const SECRET_KEY = '154758dbe24e20067b27fc3cef22dc61';
 
     /**
      * @test
@@ -28,10 +28,8 @@ class AES256EncryptorTest extends TestCase
     /**
      * @test
      * @dataProvider getContentData()
-     *
-     * @param mixed $data
      */
-    public function checkEncryptorOtherTypes($data)
+    public function checkEncryptorOtherTypes(mixed $data)
     {
         $aes = new AES256Encryptor(self::SECRET_KEY);
         $encryptData = $aes->encrypt($data);

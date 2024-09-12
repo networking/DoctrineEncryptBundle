@@ -9,7 +9,7 @@ namespace Ambta\DoctrineEncryptBundle\Encryptors;
  */
 class VariableEncryptor implements EncryptorInterface
 {
-    const ENCRYPT_METHOD = 'aes-256-ecb';
+    final public const ENCRYPT_METHOD = 'aes-256-ecb';
 
     /**
      * @var string
@@ -19,21 +19,15 @@ class VariableEncryptor implements EncryptorInterface
     /**
      * @var string
      */
-    private $suffix;
-
-    /**
-     * @var string
-     */
-    private $initializationVector;
+    private $initializationVector = false;
 
     /**
      * {@inheritdoc}
+     * @param string $suffix
      */
-    public function __construct($key, $suffix)
+    public function __construct($key, private $suffix)
     {
-        $this->secretKey = md5($key);
-        $this->suffix = $suffix;
-        $this->initializationVector = false;
+        $this->secretKey = md5((string) $key);
     }
 
     /**

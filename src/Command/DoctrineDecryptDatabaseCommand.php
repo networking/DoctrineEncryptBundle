@@ -109,7 +109,7 @@ class DoctrineDecryptDatabaseCommand extends AbstractCommand
                 //Loop through the property's in the entity
                 foreach ($this->getEncryptionableProperties($metaData) as $property) {
                     //Get and check getters and setters
-                    $methodeName = ucfirst($property->getName());
+                    $methodeName = ucfirst((string) $property->getName());
 
                     $getter = 'get'.$methodeName;
                     $setter = 'set'.$methodeName;

@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
  */
 class VariableEncryptorTest extends TestCase
 {
-    const SECRET_KEY = '624758dbe24e20067b27fc3cef22dc61';
+    final public const SECRET_KEY = '624758dbe24e20067b27fc3cef22dc61';
 
     /**
      * @test

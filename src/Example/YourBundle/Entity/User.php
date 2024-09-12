@@ -8,43 +8,35 @@ use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
  * This is an user entity which contains user information
  *
  * @author you <you@yourmail.com>
- * @ORM\Table(name="user")
- * @ORM\Entity()
  */
+#[ORM\Table(name: 'user')]
+#[ORM\Entity]
 class User
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
     /**
      * @Encrypted
-     * @ORM\Column(type="string", length=25, unique=true)
      */
+    #[ORM\Column(type: 'string', length: 25, unique: true)]
     private $username;
 
-    /**
-     * @ORM\Column(type="string", length=64)
-     */
+    #[ORM\Column(type: 'string', length: 64)]
     private $password;
 
-    /**
-     * @ORM\Column(name="is_active", type="boolean")
-     */
+    #[ORM\Column(name: 'is_active', type: 'boolean')]
     private $isActive;
 
     /**
      * @Encrypted
-     * @ORM\Column(name="roles", type="text")
      */
+    #[ORM\Column(name: 'roles', type: 'text')]
     private $roles;
 
-    /**
-     * @ORM\Column(name="is_removed", type="boolean")
-     */
+    #[ORM\Column(name: 'is_removed', type: 'boolean')]
     private $isRemoved;
 
 
@@ -97,7 +89,7 @@ class User
      */
     public function setPassword($password)
     {
-        $this->password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 12));
+        $this->password = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
 
         return $this;
     }
@@ -109,7 +101,7 @@ class User
      */
     public function getRoles()
     {
-        return explode(',', $this->roles);
+        return explode(',', (string) $this->roles);
     }
 
     /**

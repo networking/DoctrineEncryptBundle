@@ -9,8 +9,8 @@ namespace Ambta\DoctrineEncryptBundle\Encryptors;
  */
 class AES256Encryptor implements EncryptorInterface
 {
-    const METHOD_NAME = 'aes-256';
-    const ENCRYPT_MODE = 'ecb';
+    final public const METHOD_NAME = 'aes-256';
+    final public const ENCRYPT_MODE = 'ecb';
 
     /**
      * @var string
@@ -20,27 +20,21 @@ class AES256Encryptor implements EncryptorInterface
     /**
      * @var string
      */
-    private $suffix;
-
-    /**
-     * @var string
-     */
     private $encryptMethod;
 
     /**
      * @var string
      */
-    private $initializationVector;
+    private $initializationVector = false;
 
     /**
      * {@inheritdoc}
+     * @param string $suffix
      */
-    public function __construct($key, $suffix)
+    public function __construct($key, private $suffix)
     {
-        $this->secretKey = md5($key);
-        $this->suffix = $suffix;
+        $this->secretKey = md5((string) $key);
         $this->encryptMethod = sprintf('%s-%s', self::METHOD_NAME, self::ENCRYPT_MODE);
-        $this->initializationVector = false;
     }
 
     /**

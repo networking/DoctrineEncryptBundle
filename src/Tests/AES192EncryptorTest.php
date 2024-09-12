@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
  */
 class AES192EncryptorTest extends TestCase
 {
-    const SECRET_KEY = '624758dbe24e20067b27fc3cef22dc61';
+    final public const SECRET_KEY = '624758dbe24e20067b27fc3cef22dc61';
 
     /**
      * @test
@@ -28,10 +28,8 @@ class AES192EncryptorTest extends TestCase
     /**
      * @test
      * @dataProvider getContentData()
-     *
-     * @param mixed $data
      */
-    public function checkEncryptorWithoutString($data)
+    public function checkEncryptorWithoutString(mixed $data)
     {
         $aes = new AES192Encryptor(self::SECRET_KEY);
         $encryptData = $aes->encrypt($data);

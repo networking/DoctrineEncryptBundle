@@ -7,18 +7,13 @@ namespace Ambta\DoctrineEncryptBundle\Encryptors;
  */
 class AES128Encryptor implements EncryptorInterface
 {
-    const ENCRYPT_NAME = 'AES-128';
-    const ENCRYPT_MODE = 'ECB';
+    final public const ENCRYPT_NAME = 'AES-128';
+    final public const ENCRYPT_MODE = 'ECB';
 
     /**
      * @var string
      */
     private $secretKey;
-
-    /**
-     * @var string
-     */
-    private $suffix;
 
     /**
      * @var string
@@ -32,11 +27,11 @@ class AES128Encryptor implements EncryptorInterface
 
     /**
      * {@inheritdoc}
+     * @param string $suffix
      */
-    public function __construct($key, $suffix)
+    public function __construct($key, private $suffix)
     {
-        $this->secretKey = md5($key);
-        $this->suffix = $suffix;
+        $this->secretKey = md5((string) $key);
         $this->encryptMethod = sprintf('%s-%s', self::ENCRYPT_NAME, self::ENCRYPT_MODE);
         $this->initializationVector = openssl_random_pseudo_bytes(
             openssl_cipher_iv_length($this->encryptMethod)
