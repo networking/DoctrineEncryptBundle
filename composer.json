@@ -13,7 +13,6 @@
     "autoload": {
         "psr-4": { "Ambta\\DoctrineEncryptBundle": "src" }
     },
-    "target-dir": "Ambta/DoctrineEncryptBundle",
     "authors": [
         {
             "name": "Marcel van Nuil",
