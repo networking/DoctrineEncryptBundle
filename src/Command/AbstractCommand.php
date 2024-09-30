@@ -1,10 +1,12 @@
 <?php
+
 namespace Ambta\DoctrineEncryptBundle\Command;
 
 use Ambta\DoctrineEncryptBundle\Subscribers\DoctrineEncryptSubscriber;
 use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -13,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Michael Feinbier <michael@feinbier.net>
  **/
-abstract class AbstractCommand extends ContainerAwareCommand
+abstract class AbstractCommand extends Command
 {
 
     /**
@@ -31,16 +33,33 @@ abstract class AbstractCommand extends ContainerAwareCommand
      */
     protected $annotationReader;
 
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        EventSubscriber $subscriber,
+        AnnotationReader $annotationReader,
+       ?string  $name = null
+    ) {
+        $this->entityManager = $entityManager;
+        $this->subscriber = $subscriber;
+        $this->annotationReader = $annotationReader;
+
+        parent::__construct($name);
+    }
+
     /**
      * {@inheritdoc}
      */
-    protected function initialize(InputInterface $input, OutputInterface $output)
-    {
-        $container = $this->getContainer();
-        $this->entityManager = $container->get('doctrine.orm.entity_manager');
-        $this->annotationReader = $container->get('annotation_reader');
-        $this->subscriber = $container->get('ambta_doctrine_encrypt.subscriber');
-    }
+//    protected function initialize(
+//        InputInterface $input,
+//        OutputInterface $output
+//    ) {
+//        $container = $this->getContainer();
+//        $this->entityManager = $container->get('doctrine.orm.entity_manager');
+//        $this->annotationReader = $container->get('annotation_reader');
+//        $this->subscriber = $container->get(
+//            'ambta_doctrine_encrypt.subscriber'
+//        );
+//    }
 
     /**
      * Get an result iterator over the whole table of an entity.
@@ -51,7 +70,10 @@ abstract class AbstractCommand extends ContainerAwareCommand
      */
     protected function getEntityIterator($entityName)
     {
-        $query = $this->entityManager->createQuery(sprintf('SELECT o FROM %s o', $entityName));
+        $query = $this->entityManager->createQuery(
+            sprintf('SELECT o FROM %s o', $entityName)
+        );
+
         return $query->iterate();
     }
 
@@ -64,8 +86,11 @@ abstract class AbstractCommand extends ContainerAwareCommand
      */
     protected function getTableCount($entityName)
     {
-        $query = $this->entityManager->createQuery(sprintf('SELECT COUNT(o) FROM %s o', $entityName));
-        return (int) $query->getSingleScalarResult();
+        $query = $this->entityManager->createQuery(
+            sprintf('SELECT COUNT(o) FROM %s o', $entityName)
+        );
+
+        return (int)$query->getSingleScalarResult();
     }
 
     /**
@@ -77,10 +102,10 @@ abstract class AbstractCommand extends ContainerAwareCommand
     protected function getEncryptionableEntityMetaData()
     {
         $validMetaData = [];
-        $metaDataArray = $this->entityManager->getMetadataFactory()->getAllMetadata();
+        $metaDataArray = $this->entityManager->getMetadataFactory()
+            ->getAllMetadata();
 
-        foreach ($metaDataArray as $entityMetaData)
-        {
+        foreach ($metaDataArray as $entityMetaData) {
             if ($entityMetaData->isMappedSuperclass) {
                 continue;
             }
@@ -104,12 +129,17 @@ abstract class AbstractCommand extends ContainerAwareCommand
     protected function getEncryptionableProperties($entityMetaData)
     {
         //Create reflectionClass for each meta data object
-        $reflectionClass = New \ReflectionClass($entityMetaData->name);
+        $reflectionClass = new \ReflectionClass($entityMetaData->name);
         $propertyArray = $reflectionClass->getProperties();
-        $properties    = [];
-
+        $properties = [];
         foreach ($propertyArray as $property) {
-            if ($this->annotationReader->getPropertyAnnotation($property, \Ambta\DoctrineEncryptBundle\Configuration\Encrypted::class)) {
+
+            if(count($property->getAttributes(\Ambta\DoctrineEncryptBundle\Configuration\Encrypted::class)) > 0||
+            $this->annotationReader->getPropertyAnnotation(
+                $property,
+                \Ambta\DoctrineEncryptBundle\Configuration\Encrypted::class
+            )
+            ) {
                 $properties[] = $property;
             }
         }

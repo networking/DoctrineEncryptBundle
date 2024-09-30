@@ -1,7 +1,7 @@
 services:
     ambta_doctrine_encrypt.orm_subscriber:
         class: Ambta\DoctrineEncryptBundle\Subscribers\DoctrineEncryptSubscriber
-        arguments: ["@annotation_reader", "%ambta_doctrine_encrypt.encryptor_class_name%", "%ambta_doctrine_encrypt.secret_key%", "%ambta_doctrine_encrypt.encrypted_suffix%"]
+        arguments: [ "%ambta_doctrine_encrypt.encryptor_class_name%", "%ambta_doctrine_encrypt.secret_key%", "%ambta_doctrine_encrypt.encrypted_suffix%"]
         tags:
             -  { name: doctrine.event_subscriber }
     ambta_doctrine_encrypt.subscriber:
@@ -12,3 +12,30 @@ services:
             - "%ambta_doctrine_encrypt.encryptor_class_name%"
             - "%ambta_doctrine_encrypt.secret_key%"
             - "%ambta_doctrine_encrypt.encrypted_suffix%"
+
+    ambta_dcotrin_encrypt.encrypt_command:
+        class: Ambta\DoctrineEncryptBundle\Command\DoctrineEncryptDatabaseCommand
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@ambta_doctrine_encrypt.orm_subscriber'
+            - '@annotations.reader'
+        tags:
+            - { name: 'console.command' }
+
+    ambta_dcotrin_encrypt.deencrypt_command:
+        class: Ambta\DoctrineEncryptBundle\Command\DoctrineDecryptDatabaseCommand
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@ambta_doctrine_encrypt.orm_subscriber'
+            - '@annotations.reader'
+        tags:
+            - { name: 'console.command' }
+
+    ambta_dcotrin_encrypt.encrypt_status_command:
+        class: Ambta\DoctrineEncryptBundle\Command\DoctrineEncryptStatusCommand
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@ambta_doctrine_encrypt.orm_subscriber'
+            - '@annotations.reader'
+        tags:
+            - { name: 'console.command' }

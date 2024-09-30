@@ -11,11 +11,6 @@ use Ambta\DoctrineEncryptBundle\DependencyInjection\Compiler\RegisterServiceComp
 
 class AmbtaDoctrineEncryptBundle extends Bundle {
     
-    public function build(ContainerBuilder $container) {
-        parent::build($container);
-        $container->addCompilerPass(new RegisterServiceCompilerPass(), PassConfig::TYPE_AFTER_REMOVING);
-    }
-    
     public function getContainerExtension():?ExtensionInterface
     {
         return new DoctrineEncryptExtension();

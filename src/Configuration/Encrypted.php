@@ -3,11 +3,9 @@
 namespace Ambta\DoctrineEncryptBundle\Configuration;
 
 /**
- * The Encrypted class handles the @Encrypted annotation.
  *
- * @author Victor Melnik <melnikvictorl@gmail.com>
- * @Annotation
  */
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class Encrypted {
     //Just an placeholder
 }

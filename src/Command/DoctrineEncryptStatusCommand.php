@@ -2,9 +2,13 @@
 
 namespace Ambta\DoctrineEncryptBundle\Command;
 
+use FontLib\Table\Type\name;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'doctrine:encrypt:status')]
 /**
  * Get status of doctrine encrypt bundle and the database.
  *
@@ -53,5 +57,7 @@ class DoctrineEncryptStatusCommand extends AbstractCommand
 
         $output->writeln('');
         $output->writeln(sprintf('<info>%d</info> entities found which are containing <info>%d</info> encrypted properties.', count($metaDataArray), $totalCount));
+
+        return Command::SUCCESS;
     }
 }

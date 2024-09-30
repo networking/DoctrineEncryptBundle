@@ -3,12 +3,15 @@
 namespace Ambta\DoctrineEncryptBundle\Command;
 
 use Ambta\DoctrineEncryptBundle\DependencyInjection\DoctrineEncryptExtension;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
+#[AsCommand(name: 'doctrine:decrypt:database')]
 /**
  * Decrypt whole database on tables which are encrypted.
  *
@@ -154,5 +157,7 @@ class DoctrineDecryptDatabaseCommand extends AbstractCommand
 
         //Say it is finished
         $output->writeln("\nDecryption finished values found: <info>".$valueCounter.'</info>, decrypted: <info>'.$this->subscriber->decryptCounter."</info>.\nAll values are now decrypted.");
+
+        return Command::SUCCESS;
     }
 }
